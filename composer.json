@@ -1,0 +1,22 @@
+{
+    "name": "petun/ya-weather-speech",
+    "description": "Mp3 file generator for yandex weather",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Petr Marochkin",
+            "email": "petun911@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^3.1@dev",
+        "symfony/config": "^3.1@dev",
+        "symfony/yaml": "^3.1@dev",
+        "symfony/translation": "^3.1@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Petun\\YaSpeech\\": "app"
+        }
+    }
+}

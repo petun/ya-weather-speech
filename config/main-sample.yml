@@ -1,0 +1,7 @@
+cacheDir: cache
+weather:
+  cityId: 27643
+speech:
+  apiKey: key-here
+  speaker: jane
+  emotion: good

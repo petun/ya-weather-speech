@@ -1,0 +1,5 @@
+.idea
+vendor/
+composer.lock
+cache/*.mp3
+config/main.yml
