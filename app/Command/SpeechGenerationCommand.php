@@ -9,28 +9,70 @@
 namespace Petun\YaSpeech\Command;
 
 
+use Petun\YaSpeech\Configuration\MainConfiguration;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class SpeechGenerationCommand extends Command {
+class SpeechGenerationCommand extends Command
+{
 
-	protected function configure() {
+	private $_config = [];
 
+	protected function initialize(InputInterface $input, OutputInterface $output) {
+		$output->writeln('Get and check configuration');
+
+		try {
+			$configDirectories = array(__DIR__ . '/../../config');
+			$locator = new FileLocator($configDirectories);
+			$this->_config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents($locator->locate('main.yml')));
+
+			$processor = new Processor();
+			$processor->processConfiguration(new MainConfiguration(), [$this->_config]);
+
+		} catch (Exception $e) {
+			$output->writeln('<error>' . $e->getMessage() . '</error>');
+		}
+
+		$output->writeln('Init OK');
+
+		if ($output->isDebug())
+			$output->writeln('Config is ' . print_r($this->_config, true));
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		$name = $input->getArgument('name');
-		if ($name) {
-			$text = 'Hello '.$name;
-		} else {
-			$text = 'Hello';
-		}
+	protected function configure() {
+		$this
+			->setName('speech:weather')
+			->setDescription('get weather from yandex and save it to cache');
+	}
 
-		if ($input->getOption('yell')) {
-			$text = strtoupper($text);
-		}
+	protected function execute(InputInterface $input, OutputInterface $output) {
+		$output->writeln('Get weather info from yandex. CityId = ' . $this->_config['weather']['cityId']);
+		$info = new \Petun\YaSpeech\Weather\Info($this->_config['weather']['cityId']);
+		$composer = new \Petun\YaSpeech\Weather\Composer($info);
 
-		$output->writeln($text);
+		if ($output->isDebug())
+			$output->writeln('Generated text is ' . $composer->getComposition());
+
+		$output->writeln('Send text to yandex speech');
+		$speech = new \Petun\YaSpeech\Speech\Processor(
+			$this->_config['speech']['apiKey'],
+			$this->_config['speech']['speaker'],
+			$this->_config['speech']['emotion']
+		);
+		$content = $speech->getMp3($composer->getComposition());
+
+
+		$fileToSave = $this->_config['cacheDir'] . '/today_weather.mp3';
+
+		$output->writeln('Save to file - ' . $fileToSave);
+		$bytes = file_put_contents($fileToSave, $content);
+
+		if ($output->isDebug())
+			$output->writeln('Write ' . $bytes . ' bytes');
 	}
 
 } 

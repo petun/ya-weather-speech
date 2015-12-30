@@ -2,10 +2,14 @@
 
 require_once('vendor/autoload.php');
 
-use Petun\YaSpeech\Configuration\MainConfiguration;
-use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\FileLocator;
+use Petun\YaSpeech\Command\SpeechGenerationCommand;
+use Symfony\Component\Console\Application;
 
+$app = new Application();
+$app->add(new SpeechGenerationCommand());
+$app->run();
+
+/*
 $configDirectories = array(__DIR__.'/app/config');
 $locator = new FileLocator($configDirectories);
 $config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents($locator->locate('main.yml')));
@@ -29,3 +33,4 @@ $fileToSave = $config['cacheDir'] . '/today_weather.mp3';
 file_put_contents($fileToSave, $content);
 
 echo "DONE!";
+*/
