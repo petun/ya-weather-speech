@@ -27,6 +27,7 @@ class MainConfiguration implements ConfigurationInterface {
 				->arrayNode('weather')
 					->children()
 						->integerNode('cityId')->min(0)->end()
+						->scalarNode('composition')->end()
 					->end()
 				->end()
 				->arrayNode('speech')

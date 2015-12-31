@@ -1,7 +1,8 @@
 cacheDir: cache
 weather:
   cityId: 27643
+  composition: Сегодня в городе %town% %type%, температура %temp%, ветер %wind%, давление %pressure%, влажность %humidity%. Обновлено в %time%!
 speech:
   apiKey: key-here
-  speaker: jane
-  emotion: good
+  speaker: jane #женские голоса jane и omazh, мужские голоса zahar и ermil.
+  emotion: good # good (доброжелательный), neutral(нейтральный), evil (злой),mixed (переменная окраска).

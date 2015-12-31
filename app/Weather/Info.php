@@ -64,4 +64,8 @@ class Info {
 	public function getPressure() {
 		return $this->_xml->fact->pressure;
 	}
+
+	public function getTime() {
+		return $this->_xml->fact->observation_time;
+	}
 }

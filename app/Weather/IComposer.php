@@ -11,5 +11,5 @@ interface IComposer
 {
 	public function __construct(Info $yaInfo);
 
-	public function getComposition();
+	public function getComposition($format);
 }

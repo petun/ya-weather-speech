@@ -55,7 +55,7 @@ class SpeechGenerationCommand extends Command
 		$composer = new \Petun\YaSpeech\Weather\Composer($info);
 
 		if ($output->isDebug())
-			$output->writeln('Generated text is ' . $composer->getComposition());
+			$output->writeln('Generated text is ' . $composer->getComposition($this->_config['weather']['composition']));
 
 		$output->writeln('Send text to yandex speech');
 		$speech = new \Petun\YaSpeech\Speech\Processor(
@@ -63,7 +63,7 @@ class SpeechGenerationCommand extends Command
 			$this->_config['speech']['speaker'],
 			$this->_config['speech']['emotion']
 		);
-		$content = $speech->getMp3($composer->getComposition());
+		$content = $speech->getMp3($composer->getComposition($this->_config['weather']['composition']));
 
 
 		$fileToSave = $this->_config['cacheDir'] . '/today_weather.mp3';
