@@ -63,16 +63,24 @@ class SpeechGenerationCommand extends Command
 			$this->_config['speech']['speaker'],
 			$this->_config['speech']['emotion']
 		);
+
 		$content = $speech->getMp3($composer->getComposition($this->_config['weather']['composition']));
 
+		if ($content) {
+			$fileToSave = $this->_config['cacheDir'] . '/today_weather.mp3';
 
-		$fileToSave = $this->_config['cacheDir'] . '/today_weather.mp3';
+			$output->writeln('Save to file - ' . $fileToSave);
+			$bytes = file_put_contents($fileToSave, $content);
 
-		$output->writeln('Save to file - ' . $fileToSave);
-		$bytes = file_put_contents($fileToSave, $content);
+			if ($output->isDebug())
+				$output->writeln('Write ' . $bytes . ' bytes');
 
-		if ($output->isDebug())
-			$output->writeln('Write ' . $bytes . ' bytes');
+		} else {
+			$output->writeln('Error while download file');
+		}
+
+
+
 	}
 
 } 

@@ -33,10 +33,14 @@ class Processor {
 		$this->_emotion = $emotion;
 	}
 
+	/**
+	 * @param $text
+	 *
+	 * @return string|bool
+	 */
 	public function getMp3($text) {
 		$qs = http_build_query(array("format" => "mp3","lang" => "ru-RU","speaker" => $this->_speaker ,"key" => $this->_apiKey,"emotion" => $this->_emotion, "text" => $text)); // параметры запроса
 		$ctx = stream_context_create(array("http"=>array("method"=>"GET","header"=>"Referer: \r\n")));
-		$soundfile = file_get_contents("https://tts.voicetech.yandex.net/generate?".$qs, false, $ctx); // запрос на генерацию mp3 файла
-		return $soundfile;
+		return @file_get_contents("https://tts.voicetech.yandex.net/generate?".$qs, false, $ctx); // запрос на генерацию mp3 файла
 	}
 } 

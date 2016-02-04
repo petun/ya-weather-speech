@@ -22,7 +22,7 @@ class Info {
 		if (preg_match('/-\d/', $temp)) {
 			return '-';
 		}
-		return '+';
+		return '';
 	}
 
 	public function getTown() {

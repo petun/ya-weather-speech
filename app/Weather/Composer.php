@@ -34,7 +34,7 @@ class Composer implements IComposer
 		$tr = new Translator('ru_RU');
 		$tr->addLoader('array', new ArrayLoader());
 		$tr->addResource('array', [
-			'degree|degree|degrees' => 'градус|градуcа|градусов',
+			'degree|degree|degrees' => 'градус|градуса|градусов',
 			'percent' => 'процент|процента|процентов',
 			'mills' => 'миллиметр|миллиметра|миллиметров',
 			'hour' => 'час|часа|часов',
@@ -45,7 +45,7 @@ class Composer implements IComposer
 		$humidity_text = $tr->transChoice('percent', $this->_info->getHumidity());
 		$pressure_text = $tr->transChoice('mills', $this->_info->getPressure());
 
-		$tempPrefixText = $this->_info->getTemperaturePrefix() == '-' ? 'минус' : 'плюс';
+		$tempPrefixText = $this->_info->getTemperaturePrefix() == '-' ? 'минус' : '';
 		$time = date_parse($this->_info->getTime());
 		$timeStr = $time['hour'] . ' ' . $tr->transChoice('hour', $time['hour']). ' ' . $time['minute'] .' ' . $tr->transChoice('minute', $time['minute']);
 
